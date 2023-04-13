@@ -92,6 +92,8 @@ if (buttonState_2round == HIGH){    // if button 2 is pressed : 5 rotations
 }
   else if (IR_read == HIGH){        // if not available run vibration motors
     no_cookie();
+    delay(1000);
+    run_vib();
 }}
 
 }
