@@ -21,7 +21,6 @@ void setup() {
   pinMode(buttonPin_2round, INPUT); //input two
   pinMode(Ir_pin, INPUT);           // input from IR sensor
   pinMode(vib_motor1, OUTPUT);      // output to vibration motor
-//  digitalWrite(vib_motor1, LOW);
 }
 
 void run_vib(){   // function: run the vibration motor for 4 seconds
@@ -40,7 +39,6 @@ void cookie(){  // run this function if cookie is detected in the shaft dispense
 void no_cookie(){ // run this function if cookie is NOT detected in the shaft dispenser
    Serial.print("NO Cookie.. running vibration motor\n");
 
-//  delay(100);
   
 }
 
