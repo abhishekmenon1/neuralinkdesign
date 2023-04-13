@@ -1,0 +1,99 @@
+// include libraries
+#include<Servo.h>
+
+
+// define variables
+Servo servo;
+const int buttonPin_1round = 2;
+const int buttonPin_2round = 3;
+const int Ir_pin = 4;
+const int vib_motor1 = 9;
+
+int buttonState_1round = 0;
+int buttonState_2round = 0;
+int IR_read = HIGH;
+
+void setup() {
+  // put your setup code here, to run once:
+  servo.attach(7);
+  Serial.begin(9600);
+  pinMode(buttonPin_1round, INPUT); //input one
+  pinMode(buttonPin_2round, INPUT); //input two
+  pinMode(Ir_pin, INPUT);           // input from IR sensor
+  pinMode(vib_motor1, OUTPUT);      // output to vibration motor
+//  digitalWrite(vib_motor1, LOW);
+}
+
+void run_vib(){   // function: run the vibration motor for 4 seconds
+  Serial.print("Vibration motor activated\n");
+  digitalWrite(vib_motor1, HIGH);
+  delay(4000);
+  digitalWrite(vib_motor1, LOW);
+  delay(100);
+}
+
+void cookie(){  // run this function if cookie is detected in the shaft dispenser
+  Serial.print("Cookie detected\n");
+  delay(100);
+}
+
+void no_cookie(){ // run this function if cookie is NOT detected in the shaft dispenser
+   Serial.print("NO Cookie.. running vibration motor\n");
+
+//  delay(100);
+  
+}
+
+void five_rounds(){       // rotate servo motor 5 times at speed 115
+  Serial.print("-----\n");
+  Serial.print("5 biscuits: START\n");
+  servo.write(115);
+  delay(7900);
+  Serial.print("5 biscuits: DELIVERED\n");
+  Serial.print("-----\n");
+  servo.write(90);
+  delay(1000); 
+}
+
+void one_round(){ // rotate servo motor 1 time at speed 115
+  Serial.print("-----\n");
+  Serial.print("1 biscuit: START\n");
+  servo.write(115);
+  delay(1580);
+  Serial.print("1 biscuit: DELIVERED\n");
+  servo.write(90);
+  delay(1000); 
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+buttonState_1round = digitalRead(buttonPin_1round);   // read the button inputs
+buttonState_2round = digitalRead(buttonPin_2round);
+IR_read = digitalRead(Ir_pin); // read the IR sensor inputs
+
+
+if (buttonState_1round == HIGH){    // if button 1 is pressed: 1 rotation
+  if (IR_read == LOW){              // check IR sensor to see if cookies are available
+                                    // if available run servo
+  cookie();
+  one_round();
+}
+  else if (IR_read == HIGH){      // if not available run vibration motors
+    no_cookie();
+    delay(1000);
+    run_vib();
+}}
+
+
+if (buttonState_2round == HIGH){    // if button 2 is pressed : 5 rotations
+  if (IR_read == LOW){              // check IR sensor to see if cookies are available
+                                    // if available run servo
+  cookie();
+  five_rounds();
+}
+  else if (IR_read == HIGH){        // if not available run vibration motors
+    no_cookie();
+}}
+
+}
